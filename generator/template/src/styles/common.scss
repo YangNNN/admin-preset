@@ -1,0 +1,117 @@
+/** 表格图片 */
+.common-table-row-img {
+  img {
+    max-width: 100%;
+  }
+}
+
+.avatar-bg {
+  display: inline-block;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  &.border-radius-0 {
+    border-radius: 0;
+  }
+  &.border-radius-10 {
+    border-radius: 10px;
+  }
+  &.small {
+    width: 40px;
+    height: 40px;
+  }
+  &.medium {
+    width: 80px;
+    height: 80px;
+  }
+  &.large {
+    width: 100px;
+    height: 100px;
+  }
+}
+
+.flex {
+  display: flex;
+}
+.flex-direction {
+	@extend .flex;
+  flex-direction: column;
+}
+.fg1 {
+  flex: 1;
+}
+.j-flex-end {
+  justify-content: flex-end;
+}
+.c-flex-end {
+  align-items: flex-end;
+}
+.fs0 {
+  flex-shrink: 0;
+}
+.c-center {
+  align-items: center;
+}
+.j-center {
+  justify-content: center;
+}
+.flex-between {
+	@extend .flex;
+  justify-content: space-between;
+}
+.flex-c-center {
+	@extend .flex;
+	@extend .c-center;
+}
+.flex-j-center {
+	@extend .flex;
+	@extend .j-center;
+}
+.flex-center {
+	@extend .flex;
+	@extend .c-center;
+	@extend .j-center;
+}
+
+
+.text-hidden {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.order-state {
+  &.state-1 {
+    color: gray;
+  }
+  &.state0 {
+    color: rgb(233, 43, 43);
+  }
+  &.state1 {
+    color: rgb(206, 180, 62);
+  }
+  &.state1-1 {
+    color: rgb(236, 32, 32);
+  }
+  &.state11 {
+    color: rgb(67, 206, 62);
+  }
+  &.state12 {
+    color: rgb(62, 206, 62);
+  }
+  &.state2 {
+    color: rgb(46, 201, 15);
+  }
+  &.state3 {
+    color: rgb(25, 221, 221);
+  }
+  &.state4 {
+    color: rgb(34, 24, 179);
+  }
+  &.state5 {
+    color: rgb(214, 26, 205);
+  }
+}
