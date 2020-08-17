@@ -175,11 +175,12 @@ export default {
             return false
           }
           this.isButtonLoading = true
-          const api = !this.isAdd
-            ? this.useConfig.updUrl
-            : this.useConfig.addUrl
           try {
-            await this.$axios.post(api, data)
+            if (this.isAdd) {
+              await this.$axios.post(useConfig.addUrl, data)
+            } else {
+              await this.$axios.put(useConfig.updUrl, data)
+            }
             this.$message.success('操作成功!')
             this.$emit('success')
           } catch (error) {
