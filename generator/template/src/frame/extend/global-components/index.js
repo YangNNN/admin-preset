@@ -125,12 +125,13 @@ export const install = function(Vue) {
         const list = optionsData.list || []
         let children = []
         if (ctype === 'el-radio') {
-          children = list.map(function(item) {
+          children = list.map(function(item, index) {
             return h(
               ctype, {
                 props: {
                   label: item[optionsData.value]
-                }
+                },
+                key: index
               },
               [
                 item[optionsData.label]
@@ -138,13 +139,14 @@ export const install = function(Vue) {
             )
           })
         } else {
-          children = list.map(function(item) {
+          children = list.map(function(item, index) {
             return h(
               ctype, {
                 props: {
                   value: item[optionsData.value],
                   label: item[optionsData.label]
-                }
+                },
+                key: index
               }
             )
           })
