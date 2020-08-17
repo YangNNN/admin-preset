@@ -4,10 +4,10 @@ module.exports = {
   /**
    * @description 请求地址
    */
-  baseUrl: isProduction ? '' : 'http://zhifuadmin.juzhentech.com',
+  baseUrl: isProduction ? 'http://pro.xxx.com' : 'http://dev.xxx.com',
 
   useSignalr: false,
-  signalrApi: 'https://yiliuapi.juzhentech.com/adminChatHub',
+  signalrApi: '',
   /**
    * @description 是否生产环境 通常和图片上传请求地址相关
    */
@@ -30,15 +30,15 @@ module.exports = {
    */
   qiniu: {
     open: false,
-    region: 'boerweb',
-    tokenUrl: '/api/Config/GetQiniuUploadToken',
+    region: '',
+    tokenUrl: '/api/xxx/GetToken',
     uploadUrl: 'https://upload.qiniup.com/',
-    fileUrl: 'http://boerimg.juzhentech.com/'
+    fileUrl: 'http://img.xxx.com/'
   },
   /**
    * @description 是否将homePage加入菜单
    */
-  pushHome: true,
+  pushHome: false,
 
   /**
    * @description 定义homePage后，将默认先转转到首页muUrl定义的页面
