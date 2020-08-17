@@ -1,20 +1,12 @@
 {
-  "useTaobaoRegistry": true,
-  "presets": {
-    "common": {
-      "useConfigFiles": false,
-      "plugins": {
-        "@vue/cli-plugin-babel": {},
-        "@vue/cli-plugin-router": {
-          "historyMode": false
-        },
-        "@vue/cli-plugin-vuex": {}
-      },
-      "vueVersion": "2",
-      "cssPreprocessor": "node-sass"
-    }
+  "useConfigFiles": false,
+  "plugins": {
+    "@vue/cli-plugin-babel": {},
+    "@vue/cli-plugin-router": {
+      "historyMode": false
+    },
+    "@vue/cli-plugin-vuex": {}
   },
-  "latestVersion": "4.5.3",
-  "lastChecked": 1597221364699,
-  "packageManager": "npm"
+  "vueVersion": "2",
+  "cssPreprocessor": "node-sass"
 }
