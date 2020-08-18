@@ -14,7 +14,7 @@ import VueAMap from 'vue-amap'
 Vue.use(VueAMap)
 
 VueAMap.initAMapApiLoader({
-  key: '25eba91c9a274cfd7c767aabb1f4715d',
+  key: 'xxxxxx', // 高德地图key
   plugin: [
     'AMap.Geolocation' // 定位控件，用来获取和展示用户主机所在的经纬度位置
   ],
