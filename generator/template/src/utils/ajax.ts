@@ -1,10 +1,57 @@
-import request from '@/utils/request'
-import { removeToken } from '@/utils/auth'
-import { Loading, Message } from 'element-ui'
 
-const Qs = window.Qs
+interface options {
+  url: string,
+  method: string, // default
+  config?: {
+    loading?: Boolean, // 是否loading
+    process?: Boolean, // 是否处理数据
+    error?: Boolean, // 错误是否报错提示
+    routeData?: any
+  },
+  baseURL?: string,
+  transformRequest?: Function,
+  headers?: object,
+  params?: any,
+  paramsSerializer?: Function,
+  data?: any,
+  timeout?: Number, // default is `0` (no timeout)
+  withCredentials?: Boolean, // default
+  adapter?: Function,
+  auth?: object,
+  responseType?: string, // default json
+  responseEncoding?: string, // default utf8
+  xsrfCookieName?: string, // default XSRF-TOKEN
+  xsrfHeaderName?: string, // default X-XSRF-TOKEN
+  onUploadProgress?: Function,
+  onDownloadProgress?: Function,
+  maxContentLength?: Number,
+  maxBodyLength?: Number,
+  validateStatus?: Function,
+  maxRedirects?: Number, // default 5
+  socketPath?: string, // default
+  httpAgent?: any,
+  httpsAgent?: any,
+  proxy?: {
+    host: string,
+    port: Number,
+    auth: {
+      username: string,
+      password: string
+    }
+  },
 
-const ERRORS = {
+  // `cancelToken` specifies a cancel token that can be used to cancel the request
+  // (see Cancellation section below for details)
+  cancelToken?: Function,
+  decompress?: Boolean // default true
+}
+
+import { removeToken } from '@/utils/auth';
+import request from '@/utils/request';
+import { Loading, Message } from 'element-ui';
+import Qs from 'Qs';
+
+const ERRORS: any = {
   '401': removeToken
 }
 
@@ -15,7 +62,7 @@ const LOADING_DEFAULT_OPTIONS = {
   background: 'rgba(255, 255, 255, 0.7)'
 }
 
-function appendRoute(url, routeData) {
+function appendRoute(url: string, routeData: any) {
   const appendKeys = []
   for (const k in routeData) {
     if (routeData.hasOwnProperty(k) && new RegExp(`/:${k}(/|$)`).test(url)) {
@@ -31,11 +78,11 @@ function appendRoute(url, routeData) {
 
 const METHODS = ['get', 'post', 'delete', 'put'];
 
-export const $axios = function(options) {
+export const $axios: any = function(options: options) {
   return beforeRequest(options)
 }
 
-function beforeRequest(options) {
+function beforeRequest(options : options) {
   options.method = options.method.toUpperCase();
 
   // 合并路由数据
@@ -60,7 +107,7 @@ function beforeRequest(options) {
   }
 
   // 设置params序列化
-  options.paramsSerializer = options.paramsSerializer || function(params) {
+  options.paramsSerializer = options.paramsSerializer || function(params: options["params"]) {
     return Qs.stringify(params, {arrayFormat: 'brackets'})
   }
 
@@ -111,9 +158,9 @@ function beforeRequest(options) {
 
 // 添加方法
 METHODS.forEach(m => {
-  $axios[m] = function(url, requestData = {}, configData = { routeData: {} }) {
+  $axios[m] = function(url: string, requestData = {}, configData = { routeData: {} }) {
     const method = m.toUpperCase()
-    const options = Object.assign(configData, {
+    const options: options = Object.assign(configData, {
       url,
       method,
       config: configData,

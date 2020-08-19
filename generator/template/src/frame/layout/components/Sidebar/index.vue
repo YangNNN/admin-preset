@@ -23,7 +23,7 @@ import { mapGetters } from 'vuex'
 import Logo from './Logo'
 import SidebarItem from './SidebarItem'
 import variables from '@/styles/variables.scss'
-import { routes } from '@/router'
+import { routes } from '@/router/index.ts'
 import pathToRegexp from 'path-to-regexp'
 
 // 一维路由

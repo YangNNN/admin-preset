@@ -6,7 +6,7 @@ export default [{
   hidden: true,
   children: [
     {
-      path: '/user',
+      path: '/page/memberManage',
       component: () => import('@/pages/user'),
     }
   ]

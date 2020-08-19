@@ -56,6 +56,8 @@ export default {
         hasForm: false
       }
     }
+  },
+  methods: {
   }
 }
 </script>

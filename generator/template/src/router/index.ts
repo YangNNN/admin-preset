@@ -1,11 +1,10 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-
-Vue.use(Router)
-
-/* Layout */
 import Layout from '@/frame/layout'
-import moduleRouters from './modules/pages'
+import moduleRouters from '@/router/modules/pages.js'
+import Vue from 'vue'
+import VueRouter, { RouteConfig } from 'vue-router'
+
+Vue.use(VueRouter)
+
 /* Router Modules */
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -98,15 +97,18 @@ export const constantRoutes = [
   }
 ]
 
-export const routes = constantRoutes.concat(moduleRouters)
+export const routes: Array<RouteConfig> = constantRoutes.concat(moduleRouters)
 
-const createRouter = () => new Router({
+const createRouter: any = () => new VueRouter({
   // mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
+  scrollBehavior() {
+    return { x: 0, y: 0 };
+  },
   routes: routes
 })
 
 const router = createRouter()
+
 
 export function resetRouter() {
   const newRouter = createRouter()
