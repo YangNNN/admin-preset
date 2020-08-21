@@ -4,7 +4,8 @@
     "@vue/cli-plugin-babel": {},
     "@vue/cli-plugin-typescript": {
       "classComponent": false,
-      "useTsWithBabel": true
+      "useTsWithBabel": true,
+      "convertJsToTs": false
     },
     "@vue/cli-plugin-router": {
       "historyMode": false
