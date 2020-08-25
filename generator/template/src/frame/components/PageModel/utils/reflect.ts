@@ -1,10 +1,22 @@
+
+interface propKeys extends Array<any> {
+  [x: string]: any
+  [index: number]: string | number
+}
+
+interface reclectRelations {
+  [key :string]: Array<propKeys>
+}
+
 export default class ReflectRelation {
+  reclectRelations: reclectRelations | null
   constructor() {
     this.reclectRelations = {}
   }
-  collectRelations(config) {
+  collectRelations(config: any) {
     const self = this
-    function collect(data, keys) {
+    this.reclectRelations = {}
+    function collect(data: any, keys: propKeys) {
       for (const key in data) {
         if (data.hasOwnProperty(key)) {
           const val = data[key]
@@ -17,17 +29,17 @@ export default class ReflectRelation {
             if (key === '_reflect') {
               const reclectRelations = self.reclectRelations
               keys.reflectChangeKey = data._reflectChangeKey || 'list'
-              if (reclectRelations[val]) {
+              if (reclectRelations && reclectRelations[val]) {
                 reclectRelations[val].push(keys)
               } else {
-                reclectRelations[val] = [keys]
+                reclectRelations && (reclectRelations[val] = [keys])
               }
             }
           }
         }
       }
     }
-    function collectArray(array, keys) {
+    function collectArray(array: Array<any>, keys: propKeys) {
       for (let i = 0; i < array.length; i++) {
         const val = array[i]
         const type = Object.prototype.toString.call(val).slice(8, -1).toLowerCase()
@@ -38,8 +50,8 @@ export default class ReflectRelation {
     }
     collect(config, [])
   }
-  getRelations(key) {
-    return this.reclectRelations[key]
+  getRelations(key: string) {
+    return this.reclectRelations && this.reclectRelations[key]
   }
 
   destroy() {

@@ -25,7 +25,6 @@
     <!-- 操作栏 -->
     <operate
       v-if="useConfigTable.operate && useConfigTable.operate.isLeft"
-      :context="context"
       :operate="useConfigTable.operate"
       @costom="onCostomEvent"
       @del="onDel"
@@ -41,7 +40,6 @@
     <!-- 操作栏 -->
     <operate
       v-if="useConfigTable.operate && !useConfigTable.operate.isLeft"
-      :context="context"
       :operate="useConfigTable.operate"
       @costom="onCostomEvent"
       @del="onDel"
@@ -54,34 +52,19 @@
 <script>
 import { getType } from '@/utils'
 import { wrapFc } from '../utils'
+import provideMixin from '@/frame/components/PageModel/utils/provide-mixin'
 import column from './column'
 import operate from './operate'
 import { mapState } from 'vuex'
 export default {
+  mixins: [provideMixin],
   components: {
     column, operate
   },
   props: {
-    table: {
-      type: Object,
-      default: () => ({})
-    },
-    context: {
-      type: Object,
-      default: () => ({})
-    },
-    useConfig: {
-      type: Object,
-      default: () => ({})
-    },
     isShowForm: {
       type: Boolean,
       default: false
-    }
-  },
-  provide() {
-    return {
-      context: this.context
     }
   },
   data() {
@@ -94,6 +77,9 @@ export default {
     }
   },
   computed: {
+    table() {
+      return this.pagemodel.table
+    },
     useConfigTable() {
       return this.useConfig.table || {}
     },

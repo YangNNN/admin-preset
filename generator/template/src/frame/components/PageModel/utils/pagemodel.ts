@@ -29,6 +29,7 @@ export default class PageModel {
   hasSearch!: Boolean;
   isSearchExpand!: Boolean;
   hasScroll!: Boolean;
+  hasForm!: Boolean;
   isUseTabs!: Boolean;
   scrollLeft!: Number;
   transformScroll!: object;
@@ -42,6 +43,16 @@ export default class PageModel {
   [propName: string]: any;
   constructor(context: context) {
     this.context = context
+    this.useConfig = {}
+    this.hasSearch = false
+    this.isSearchExpand = false
+    this.hasScroll = false
+    this.hasForm = false
+    this.isUseTabs = false
+    this.scrollLeft = 0;
+    this.transformScroll = { transform: 0 }
+    this.isListenScroll = false
+    this.wrapWidth = '0px'
     this.generateConfig()
   }
   
@@ -73,7 +84,13 @@ export default class PageModel {
     config.addUrl = config.addUrl || config.url
     config.updUrl = config.updUrl || config.url
     config.delUrl = config.delUrl || config.url
-    this.useConfig = config
+
+    config.getMethod = config.getMethod || 'get'
+    config.addMethod = config.addMethod || 'post'
+    config.updMethod = config.updMethod || 'put'
+    config.delMethod = config.delMethod || 'delete'
+
+    this.setValue('useConfig', config)
     this.table = {
       isLoading: false, // 是否正在加载
       data: [], // 表格当前数据
@@ -97,6 +114,7 @@ export default class PageModel {
     this.transformScroll = {
       transform: `translateX(${this.scrollLeft}px)`
     }
+    this.hasForm = useConfig.hasForm
     // 表单页面是否使用tab
     if (useConfig.hasForm !== false) {
       const formEls = useConfig.form?.els
@@ -165,7 +183,7 @@ export default class PageModel {
       pageSize: table.pageSize
     }, this.getTableReqParams())
 
-    const data = await context.$axios.get(url, requestData)
+    const data = await context.$axios[useConfig.getMethod](url, requestData)
     table.currentPage = requestData.pageIndex
     table.pageTotal = data.total
 
@@ -301,7 +319,7 @@ export default class PageModel {
   }
 
   setValue(key: string, value: any) {
-    this[key] = value
+    this.context.$set(this, key, value)
   }
 
 }

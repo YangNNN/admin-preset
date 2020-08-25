@@ -3,7 +3,7 @@
     :prop="column.prop"
     :label="column.label"
     :width="column.width"
-    :sort-orders="column['sort-orders'] || context.useConfig.table['sort-orders']"
+    :sort-orders="column['sort-orders'] || useConfig.table['sort-orders']"
     :sortable="column.sortValue ? 'custom' : false"
     :min-width="column['min-width']"
   >
@@ -25,11 +25,10 @@
 </template>
 
 <script>
+import provideMixin from '@/frame/components/PageModel/utils/provide-mixin'
 export default {
   name: 'Column',
-  inject: {
-    context: {}
-  },
+  mixins: [provideMixin],
   props: {
     column: {
       type: Object,

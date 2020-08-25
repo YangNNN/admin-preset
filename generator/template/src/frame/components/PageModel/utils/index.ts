@@ -1,6 +1,12 @@
 import { getType } from '@/utils/index.js'
 
-export const wrapFc = function(fc: any, context = null, data?: object, useFn = 'call', returnValue = null) {
+export const wrapFc = function(
+    fc: any,
+    context = null,
+    data?: object,
+    useFn = 'call',
+    returnValue = null
+  ) {
   if (fc && getType(fc) === 'function') {
     return fc[useFn](context, data)
   } else {

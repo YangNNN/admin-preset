@@ -1,5 +1,5 @@
 <template>
-  <div v-if="hasTopBar || hasSearch" class="model-head">
+  <div v-if="hasTopBar || pagemodel.hasSearch" class="model-head">
     <div v-if="hasTopBar" class="topbar-btns">
       <el-button
         v-if="useConfig.addUrl"
@@ -25,9 +25,9 @@
         </el-button>
       </template>
     </div>
-    <div v-if="hasSearch" class="toggle-expand" @click="onToggleExpand">
-      <span>{{ isSearchExpand ? '收起' : '展开' }}</span>
-      <i :class="[isSearchExpand ? 'el-icon-caret-top' : 'el-icon-caret-bottom']" />
+    <div v-if="pagemodel.hasSearch" class="toggle-expand" @click="onToggleExpand">
+      <span>{{ pagemodel.isSearchExpand ? '收起' : '展开' }}</span>
+      <i :class="[pagemodel.isSearchExpand ? 'el-icon-caret-top' : 'el-icon-caret-bottom']" />
     </div>
   </div>
 </template>
@@ -35,21 +35,9 @@
 <script>
 import { wrapIconClass } from '../utils'
 import { getType } from '@/utils'
+import provideMixin from '@/frame/components/PageModel/utils/provide-mixin'
 export default {
-  props: {
-    isSearchExpand: {
-      type: Boolean,
-      default: false
-    },
-    hasSearch: {
-      type: Boolean,
-      default: false
-    },
-    useConfig: {
-      type: Object,
-      default: () => ({})
-    }
-  },
+  mixins: [provideMixin],
   data() {
     return {}
   },
@@ -77,7 +65,7 @@ export default {
   methods: {
     wrapIconClass,
     onToggleExpand() {
-      this.$emit('update:isSearchExpand', !this.isSearchExpand)
+      this.pagemodel.setValue('isSearchExpand', !this.pagemodel.isSearchExpand)
     },
     onClickTopBtn(event) {
       this.$emit('custom', event)

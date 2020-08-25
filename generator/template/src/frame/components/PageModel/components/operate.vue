@@ -51,16 +51,15 @@
 
 <script>
 const Clipboard = require('clipboard')
+import provideMixin from '@/frame/components/PageModel/utils/provide-mixin'
 import { wrapFc, wrapIconClass } from '../utils'
 export default {
+  mixins: [provideMixin],
   props: {
     operate: {
       type: Object,
       default: () => ({})
     }
-  },
-  inject: {
-    context: {}
   },
   computed: {
     normalTableBtns() {

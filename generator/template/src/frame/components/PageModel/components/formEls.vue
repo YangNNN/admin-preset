@@ -50,10 +50,11 @@ export default {
     staticData: {
       type: Object,
       default: () => ({})
+    },
+    context: {
+      type: Object,
+      default: () => ({})
     }
-  },
-  inject: {
-    context: {}
   },
   methods: {
     wrapFc

@@ -1,6 +1,6 @@
 <template>
-  <div v-if="hasSearch" class="model-search">
-    <div v-show="isSearchExpand">
+  <div v-if="pagemodel.hasSearch" class="model-search">
+    <div v-show="pagemodel.isSearchExpand">
       <el-form
         class="search-form model-form"
         :model="searchForm"
@@ -10,7 +10,7 @@
         <el-row>
           <el-col
             v-for="(item, index) in showSearchEls"
-            v-show="wrapFc(item.isShow, context, searchForm, 'call', true)"
+            v-show="wrapFc(item.isShow, contextInThisComponent, searchForm, 'call', true)"
             :key="index"
             v-bind="item.col || { lg: 8 }"
           >
@@ -22,10 +22,10 @@
               <formTemplate
                 v-model="searchForm[item.prop]"
                 :options="item"
-                :context="context"
-                :change="wrapFc(item.change, context, searchForm, 'bind')"
-                :disabled="wrapFc(item.isDisabled, context, searchForm)"
-                :render-fn="wrapFc(item.renderFn, context, searchForm, 'bind')"
+                :context="contextInThisComponent"
+                :change="wrapFc(item.change, contextInThisComponent, searchForm, 'bind')"
+                :disabled="wrapFc(item.isDisabled, contextInThisComponent, searchForm)"
+                :render-fn="wrapFc(item.renderFn, contextInThisComponent, searchForm, 'bind')"
               />
             </el-form-item>
           </el-col>
@@ -47,21 +47,11 @@
 <script>
 import { jsonClone, getType, combineReqData } from '@/utils'
 import { wrapFc } from '../utils'
+import provideMixin from '@/frame/components/PageModel/utils/provide-mixin'
 
 export default {
+  mixins: [provideMixin],
   props: {
-    isSearchExpand: {
-      type: Boolean,
-      default: false
-    },
-    hasSearch: {
-      type: Boolean,
-      default: false
-    },
-    useConfig: {
-      type: Object,
-      default: () => ({})
-    },
     staticData: {
       type: Object,
       default: () => ({})
@@ -69,7 +59,7 @@ export default {
   },
   data() {
     return {
-      context: this, // 实例
+      contextInThisComponent: this, // 实例
       searchModel: {}, // 搜索初始模型
       searchForm: {}, // 搜索表单当前数据
       isInnerSearchExpand: false // 表单内部是否展开

@@ -1,5 +1,5 @@
 <template>
-  <div class="form-page" :class="{ 'use-tab': isUseTabs }">
+  <div class="form-page" :class="{ 'use-tab': pagemodel.isUseTabs }">
     <el-form
       v-if="formData"
       ref="commonForm"
@@ -13,8 +13,8 @@
     >
 
       <!-- 普通表单 -->
-      <template v-if="!isUseTabs">
-        <formEls :els="formEls" :form-data="formData" :static-data="staticData" />
+      <template v-if="!pagemodel.isUseTabs">
+        <formEls :els="formEls" :context="contextInThisComponent" :form-data="formData" :static-data="staticData" />
         <el-col>
           <el-form-item>
             <el-button type="danger" @click="cancel">
@@ -37,7 +37,7 @@
             :name="`${index.toString()}`"
           >
             <el-scrollbar :vertical="true">
-              <formEls :els="item.els" :form-data="formData" :static-data="staticData" />
+              <formEls :els="item.els" :context="contextInThisComponent" :form-data="formData" :static-data="staticData" />
             </el-scrollbar>
           </el-tab-pane>
         </el-tabs>
@@ -52,7 +52,6 @@
       </template>
 
     </el-form>
-    <component :is="renderComponent.name" v-if="renderComponent" :ref="renderComponent.ref" />
   </div>
 </template>
 
@@ -60,9 +59,11 @@
 import { combineReqData } from '@/utils'
 import { wrapFc } from '../utils'
 import formEls from '../components/formEls'
+import provideMixin from '@/frame/components/PageModel/utils/provide-mixin'
+
 export default {
   name: 'PageForm',
-  componentName: 'PageForm',
+  mixins: [provideMixin],
   components: {
     formEls
   },
@@ -70,19 +71,6 @@ export default {
     staticData: {
       type: Object,
       default: () => {}
-    },
-    useConfig: {
-      type: Object,
-      default: () => ({})
-    },
-    isUseTabs: {
-      type: Boolean,
-      default: false
-    }
-  },
-  provide() {
-    return {
-      context: this.context
     }
   },
   data() {
@@ -90,9 +78,8 @@ export default {
       activeName: '0',
       isButtonLoading: false,
       formData: {},
-      context: this,
-      isAdd: true,
-      componentIndex: 0
+      contextInThisComponent: this,
+      isAdd: true
     }
   },
   computed: {
@@ -109,22 +96,10 @@ export default {
     },
     formEls() {
       return this.form.els
-    },
-    renderComponent() {
-      const components = this.form.components
-      if (components) {
-        return {
-          name: components.list[this.componentIndex],
-          ref: components.ref || 'form-component'
-        }
-      } else {
-        return null
-      }
     }
   },
   created() {
     this.resetValue()
-    this.setComponentIndex()
   },
   methods: {
     wrapFc,
@@ -157,11 +132,6 @@ export default {
       this.isAdd = true
       this.formData = this.bindDataProcess(data)
     },
-    setComponentIndex(index) {
-      if (this.form && this.form.components) {
-        this.componentIndex = index != null ? index : this.form.components.index
-      }
-    },
     // 设置表单值
     setValue(value) {
       this.isAdd = false
@@ -176,10 +146,11 @@ export default {
           }
           this.isButtonLoading = true
           try {
+            const useConfig = this.useConfig
             if (this.isAdd) {
-              await this.$axios.post(useConfig.addUrl, data)
+              await this.$axios[useConfig.addMethod](useConfig.addUrl, data)
             } else {
-              await this.$axios.put(useConfig.updUrl, data)
+              await this.$axios[useConfig.updMethod](useConfig.updUrl, data)
             }
             this.$message.success('操作成功!')
             this.$emit('success')
