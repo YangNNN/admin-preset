@@ -5,7 +5,7 @@
 
 import systemConfig from '@/config';
 import { getType, objectMerge } from '@/utils/index.js';
-import { getPageDefaultModel } from './model';
+import getPageDefaultModel from './model';
 import ReflectRelation from './reflect';
 
 function isFunction(func: any) {

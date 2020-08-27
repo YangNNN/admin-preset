@@ -3,7 +3,7 @@
  * @author yangshangman
  */
 
-export const getPageDefaultModel = function() {
+export default function() {
   return {
     init: true,
     size: 'default',
