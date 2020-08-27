@@ -4,8 +4,8 @@
  */
 
 import systemConfig from '@/config';
-import { getPageDefaultModel } from '@/frame/components/page-model/template/model.js';
 import { getType, objectMerge } from '@/utils/index.js';
+import { getPageDefaultModel } from './model';
 import ReflectRelation from './reflect';
 
 function isFunction(func: any) {

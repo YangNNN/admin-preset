@@ -1,3 +1,8 @@
+/**
+ * @file 返回默认模板数据
+ * @author yangshangman
+ */
+
 export const getPageDefaultModel = function() {
   return {
     init: true,
