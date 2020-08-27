@@ -10,12 +10,8 @@
 </template>
 
 <script>
-import PageModel from '@/frame/components/PageModel'
 export default {
   name: 'test',
-  components: {
-    PageModel
-  },
   data() {
     return {
       reflections: {

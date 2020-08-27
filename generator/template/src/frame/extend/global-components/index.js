@@ -3,24 +3,24 @@ function resolveBaseComponent(path) {
 }
 
 const baseRegisters = [
-  'PageModel', // 页面模板
-  'ImgUpload', // 图片上传组件
-  'FileUpload', // 文件上传组件
-  'Editor', // 编辑器组件
-  'SvgIcon', // svg
-  'MdInput', // mdinput
-  'LongInput', // 长输入框
-  'LinkInput', // 链接输入框
-  'AMap', // 地图
-  'CityPicker', // 城市选择组件
-  'Images' // 图片显示组件
+  'page-model', // 页面模板
+  'img-upload', // 图片上传组件
+  'file-upload', // 文件上传组件
+  'editor', // 编辑器组件
+  'svg-icon', // svg
+  'md-Input', // mdinput
+  'long-input', // 长输入框
+  'link-input', // 链接输入框
+  'a-map', // 地图
+  'city-picker', // 城市选择组件
+  'images' // 图片显示组件
 ]
 
 export const install = function(Vue) {
   /**
    * 表格内容包裹组件
    */
-  Vue.component('tableTemplate', {
+  Vue.component('table-template', {
     props: {
       html: { // 简单标签渲染
         type: String,
@@ -79,7 +79,7 @@ export const install = function(Vue) {
   /**
    * 表单内容包裹组件
    */
-  Vue.component('formTemplate', {
+  Vue.component('form-template', {
     props: {
       // eslint-disable-next-line vue/require-default-prop
       value: null,

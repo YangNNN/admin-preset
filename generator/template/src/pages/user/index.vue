@@ -1,7 +1,8 @@
 <template>
   <div style="height: 100%">
-    <PageModel 
+    <page-model 
       :config="config"
+      @check="onCheck"
     />
   </div>
 </template>
@@ -11,11 +12,7 @@ export default {
   data() {
     return {
       config: {
-        url: '/User',
-        getUrl: '/User',
-        addUrl: '/User',
-        updUrl: '/User',
-        delUrl: '/User',
+        getUrl: '/Project',
         delKey: 'id',
         searchForm: {
           labelWidth: '120px',
@@ -43,6 +40,10 @@ export default {
               {
                 text: '删除',
                 isDel: true
+              },
+              {
+                text: '查看s',
+                event: 'check'
               }
             ]
           },
@@ -58,6 +59,9 @@ export default {
     }
   },
   methods: {
+    onCheck(row) {
+      this.$router.push('/page/workManage?projectId=' + row.projectId)
+    }
   }
 }
 </script>

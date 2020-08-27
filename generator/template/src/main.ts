@@ -14,6 +14,7 @@ import router from "./router";
 import store from "./store";
 import "./utils/error-log"; // error log
 
+
 Vue.prototype.$axios = $axios;
 
 Vue.use(VueAMap);

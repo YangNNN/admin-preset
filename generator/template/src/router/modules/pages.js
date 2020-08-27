@@ -8,6 +8,10 @@ export default [{
     {
       path: '/page/memberManage',
       component: () => import('@/pages/user'),
+    },
+    {
+      path: '/page/workManage',
+      component: () => import('@/pages/type')
     }
   ]
 }]

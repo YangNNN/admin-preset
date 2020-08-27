@@ -1,10 +1,10 @@
-import { getToken, setToken, removeToken, getUserInfo, setUserInfo, removeUserInfo } from '@/utils/auth'
-import $axios from '@/utils/ajax'
-import { resetRouter } from '@/router'
-import { tree } from '@/utils'
 import config from '@/config'
-import { invokeSignalr } from '@/utils/signalr'
+import { resetRouter } from '@/router'
 import store from '@/store'
+import { tree } from '@/utils'
+import $axios from '@/utils/ajax'
+import { getToken, getUserInfo, removeToken, removeUserInfo, setToken, setUserInfo } from '@/utils/auth'
+import { invokeSignalr } from '@/utils/signalr'
 const state = {
   token: getToken(),
   userInfo: null, // 用户信息

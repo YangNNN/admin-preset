@@ -1,4 +1,16 @@
+/**
+ * @file 基础请求封装，请求请从这里走
+ * @author yangshangman
+ */
 
+import { removeToken } from '@/utils/auth';
+import request from '@/utils/request';
+import { Loading, Message } from 'element-ui';
+import Qs from 'Qs';
+
+/**
+ * @description 请求options声明
+ */
 interface options {
   url: string,
   method: string, // default
@@ -46,15 +58,16 @@ interface options {
   decompress?: Boolean // default true
 }
 
-import { removeToken } from '@/utils/auth';
-import request from '@/utils/request';
-import { Loading, Message } from 'element-ui';
-import Qs from 'Qs';
-
+/**
+ * @description 遇到错误怎么办!!!
+ */
 const ERRORS: any = {
   '401': removeToken
 }
 
+/**
+ * @description 默认loading配置
+ */
 const LOADING_DEFAULT_OPTIONS = {
   lock: true,
   text: '加载中',
@@ -62,6 +75,12 @@ const LOADING_DEFAULT_OPTIONS = {
   background: 'rgba(255, 255, 255, 0.7)'
 }
 
+/**
+ * @description 对请求地址进行拼接 
+ * @example appendRoute('/api/test/:id', { id: 1 }) ===> { url: '/api/test/1', appendKeys: ['id'] }
+ * @param url 
+ * @param routeData 
+ */
 function appendRoute(url: string, routeData: any) {
   const appendKeys = []
   for (const k in routeData) {
@@ -79,10 +98,10 @@ function appendRoute(url: string, routeData: any) {
 const METHODS = ['get', 'post', 'delete', 'put'];
 
 export const $axios: any = function(options: options) {
-  return beforeRequest(options)
+  return sendRequest(options)
 }
 
-function beforeRequest(options : options) {
+function sendRequest(options : options) {
   options.method = options.method.toUpperCase();
 
   // 合并路由数据
@@ -93,17 +112,15 @@ function beforeRequest(options : options) {
   if (Object.keys(routeData).length) {
     const { url, appendKeys } = appendRoute(options.url, routeData)
     options.url = url
-    // 清除路由添加数据
-    if (appendKeys.length) {
-      appendKeys.forEach(key => {
-        if (options.data && options.data.hasOwnProperty(key)) {
-          delete options.data[key]
-        }
-        if (options.params && options.params.hasOwnProperty(key)) {
-          delete options.params[key]
-        }
-      })
-    }
+    // 清除被路由添加过的数据
+    appendKeys.length && appendKeys.forEach(key => {
+      if (options.data && options.data.hasOwnProperty(key)) {
+        delete options.data[key]
+      }
+      if (options.params && options.params.hasOwnProperty(key)) {
+        delete options.params[key]
+      }
+    })
   }
 
   // 设置params序列化
@@ -118,19 +135,19 @@ function beforeRequest(options : options) {
       if (config.loading) {
         loadingInstance = Loading(typeof config.loading === 'object' ? config.loading : LOADING_DEFAULT_OPTIONS)
       }
-
       const response = await request(options)
-      if (!response.error_code) {
+      const responseData = response.data
+      if (!responseData.error_code) {
         if (config.process !== false) {
-          resolve(response.data)
+          resolve(responseData)
         } else {
           resolve(response)
         }
       } else {
-        if (ERRORS[response.error_code]) {
-          ERRORS[response.error_code]()
+        if (ERRORS[responseData.error_code]) {
+          ERRORS[responseData.error_code]()
         }
-        const message = response.message || `请稍后重试!${response.error_code}`
+        const message = responseData.message || `请稍后重试!${responseData.error_code}`
         reject(message)
         if (config.error !== false) {
           Message({
@@ -167,7 +184,7 @@ METHODS.forEach(m => {
       data: method !== 'GET' ? requestData : {},
       params: method === 'GET' ? requestData : {}
     })
-    return beforeRequest(options)
+    return sendRequest(options)
   }
 })
 

@@ -12,6 +12,7 @@
 
 <script>
 export default {
+  name: 'images',
   props: {
     value: {
       type: String,

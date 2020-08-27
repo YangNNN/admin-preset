@@ -2,7 +2,7 @@
   <div :class="{fullscreen:fullscreen}" class="tinymce-container" :style="{width:containerWidth}">
     <textarea :id="tinymceId" class="tinymce-textarea" />
     <div class="editor-custom-btn-container">
-      <ImgUpload
+      <img-upload
         mode="any"
         is-btn
         :value="uploadContent"
@@ -12,7 +12,7 @@
         @upload="onUploadContent"
       >
         <el-button size="mini" type="primary" icon="el-icon-upload">上传</el-button>
-      </ImgUpload>
+      </img-upload>
     </div>
   </div>
 </template>
@@ -27,7 +27,7 @@ import toolbar from './toolbar'
 import { dynamicLoadScript, createCDNSources } from '@/utils'
 
 export default {
-  name: 'Tinymce',
+  name: 'editor',
   props: {
     id: {
       type: String,

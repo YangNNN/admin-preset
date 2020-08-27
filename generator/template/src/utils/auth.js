@@ -1,8 +1,13 @@
+/**
+ * @file 存储cookie和用户信息的文件
+ * @author yangshangman
+ */
+
 import Cookies from 'js-cookie'
 
-const TokenKey = 'Admin-Token'
+const TOKEN_KEY = 'Admin-Token'
 
-const UserInfoKey = 'User-Info'
+const USERINFO_KEY = 'User-Info'
 
 const MODE = 'JWT'
 
@@ -17,23 +22,23 @@ export const setAuthToken = function(token) {
 }
 
 export function getToken() {
-  return Cookies.get(TokenKey)
+  return Cookies.get(TOKEN_KEY)
 }
 
 export function setToken(token) {
-  return Cookies.set(TokenKey, token)
+  return Cookies.set(TOKEN_KEY, token)
 }
 
 export function removeToken() {
-  return Cookies.remove(TokenKey)
+  return Cookies.remove(TOKEN_KEY)
 }
 
 export function setUserInfo(userInfo) {
-  return localStorage.setItem(UserInfoKey, JSON.stringify(userInfo))
+  return localStorage.setItem(USERINFO_KEY, JSON.stringify(userInfo))
 }
 
 export function getUserInfo() {
-  let info = localStorage.getItem(UserInfoKey)
+  let info = localStorage.getItem(USERINFO_KEY)
   try {
     info = JSON.parse(info)
   } catch (error) {
@@ -43,5 +48,5 @@ export function getUserInfo() {
 }
 
 export function removeUserInfo() {
-  localStorage.removeItem(UserInfoKey)
+  localStorage.removeItem(USERINFO_KEY)
 }
