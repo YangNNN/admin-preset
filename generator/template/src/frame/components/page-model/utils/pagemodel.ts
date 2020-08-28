@@ -4,18 +4,38 @@
  */
 
 import systemConfig from '@/config';
-import { getType, objectMerge } from '@/utils/index.js';
+import { debounce, isFunction, objectMerge } from '@/utils';
 import getPageDefaultModel from './model';
 import ReflectRelation from './reflect';
 
-function isFunction(func: any) {
-  return getType(func) === 'function'
+/**
+ * PageModel类声明
+ */
+interface PageModelInterface {
+  context: any; // 组件实例
+  containerRef: Document; // 组件根节点
+  useConfig: any; // 转化后使用的config
+  table: table; // 列表数据及分页数据
+  hasSearch: boolean; // 是否存在搜索
+  isSearchExpand: boolean; // 搜索展开收起
+  hasForm: boolean; // 是否存在内部表单
+  isUseTabs: boolean; // 内部表单是否使用tabs形式展示
+
+  hasScroll: boolean; // 是否存在滚动(横向超出滚动)
+  sortParams: object; // 表格升降序数据
+  unwatchScroll: Function | null; // 解除监听滚动函数
+  scrollLeft: number; // // 横向滚动距离
+  wrapWidth: string; // 表格父元素的宽度
+
+  unwatchConfig: Function | null; // 解除监听config函数
+  reflectionWatches: watches | null; // 包含 解除监听反射的 数组
+  $refs: any; // 组件实例内部组件引用
+  [propName: string]: any; // 其它属性
 }
 
-interface watches extends Array<Function> {
-  reflect?: any
-}
-
+/**
+ * 列表数据及分页数据
+ */
 interface table {
   isLoading: boolean, // 是否正在加载
   data: Array<any>, // 表格当前数据
@@ -25,28 +45,32 @@ interface table {
   sizes: Array<number>
 }
 
-interface context {}
+interface watches extends Array<Function> {
+  reflect?: any
+}
 
-export default class PageModel {
+
+export default class PageModel implements PageModelInterface {
   context: any;
+  containerRef!: Document;
   useConfig: any;
   table!: table;
   hasSearch!: boolean;
   isSearchExpand!: boolean;
-  hasScroll!: boolean;
   hasForm!: boolean;
   isUseTabs!: boolean;
-  scrollLeft!: number;
-  transformScroll!: object;
+  
+  hasScroll!: boolean;
   sortParams!: object;
-  unwatchConfig!: Function;
-  unwatchScroll!: Function;
-  isListenScroll!: boolean;
-  containerRef!: Document;
+  scrollLeft!: number;
+  unwatchScroll!: Function | null;
   wrapWidth!: string;
+  
+  unwatchConfig!: Function;
   reflectionWatches!: watches | null;
+  $refs!: any;
   [propName: string]: any;
-  constructor(context: context) {
+  constructor(context: any) {
     this.context = context
     this.useConfig = {}
     this.hasSearch = false
@@ -55,19 +79,25 @@ export default class PageModel {
     this.hasForm = false
     this.isUseTabs = false
     this.scrollLeft = 0;
-    this.transformScroll = { transform: 0 }
-    this.isListenScroll = false
     this.wrapWidth = 'auto'
-    this.generateConfig()
+    this.initModel()
   }
   
-  // 生成内部使用的配置数据
-  generateConfig() {
+  // 初始化模型配置数据
+  initModel() {
+    this.setModelConfig()
+    this.setModelProperty()
+  }
+
+  /**
+   * 将config转化useConfig
+   */
+  setModelConfig() {
     const context = this.context
     const config = objectMerge(getPageDefaultModel(), context.config)
     let elsCount = 0
     let elWidthChildrenCount = 0
-    function filterEls(els: Array<any>, context: context) {
+    function filterEls(els: Array<any>, context: any) {
       const ret = []
       for (let i = 0; i < els.length; i++) {
         const el = els[i]
@@ -96,18 +126,19 @@ export default class PageModel {
     config.delMethod = config.delMethod || 'delete'
 
     this.setValue('useConfig', config)
-    this.table = {
+    this.setValue('table', {
       isLoading: false, // 是否正在加载
       data: [], // 表格当前数据
       currentPage: 1, // 当前页码
       pageSize: config.table.pageSize, // 每页条数
       pageTotal: 0, // 总页数
       sizes: config.table.sizes
-    }
-    this.setModelProperty()
+    })
   }
 
-  // 设置模型属性
+  /**
+   * 解析useConifg设置模型属性
+   */
   setModelProperty() {
     const useConfig = this.useConfig
     // 主页是否存在搜索
@@ -116,9 +147,6 @@ export default class PageModel {
     this.hasScroll = useConfig.overflowScroll
     // 滚动距离
     this.setScrollLeft(this.scrollLeft || 0)
-    this.transformScroll = {
-      transform: `translateX(${this.scrollLeft}px)`
-    }
     this.hasForm = useConfig.hasForm
     // 表单页面是否使用tab
     if (useConfig.hasForm !== false) {
@@ -128,18 +156,18 @@ export default class PageModel {
   }
 
   // 挂载后调用
-  init() {
-    this.containerRef = this.context.$refs.pageModelContainer
+  initPage() {
+    this.containerRef = (this.$refs = this.context.$refs).pageModelContainer
+    this.getData()
     this.initSearchSetting()
     this.initTableSetting()
-    this.getData()
     this.initWatch()
   }
 
   // 初始化搜索
   initSearchSetting() {
     this.isSearchExpand = this.useConfig.searchForm?.isopen
-    this.context.$refs.psearch.init()
+    this.$refs.psearch.init()
   }
 
   // 初始化表格 设置表格页数
@@ -193,21 +221,17 @@ export default class PageModel {
 
     let tableData = data.data
     isFunction(useConfig.getDataCallback) && useConfig.getDataCallback.call(context, tableData)
-    context.$emit('getData', tableData)
     table.data = tableData
+    context.$emit('getData', tableData)
     table.isLoading = false
   }
 
   getTableReqParams() {
     return {
-      ...this.getSearchData(),
+      ...this.$refs.psearch.combineReqData(),
       ...this.sortParams,
       ...this.useConfig.otherParams
     }
-  }
-
-  getSearchData() {
-    return this.context.$refs.psearch.combineReqData()
   }
 
   // 初始化监听
@@ -218,7 +242,7 @@ export default class PageModel {
     this.unwatchConfig && this.unwatchConfig()
     if (useConfig.isWatch) {
       this.unwatchConfig = context.$watch('useConfig', () => {
-        this.generateConfig()
+        this.initModel()
         this.search()
       }, {
         deep: true
@@ -227,17 +251,17 @@ export default class PageModel {
     // 是否横向超出滚动
     this.unwatchScroll && this.unwatchScroll()
     if (this.hasScroll) {
+      this.removeScrollListener()
+      this.addScrollListener()
       this.unwatchScroll = context.$watch('table.data', {
         handler() {
           this.$nextTick(() => {
-            this.pagemodel.handleTableResize()
+            this.pagemodel.setTableWrapWidth()
           })
         },
         deep: true,
         immediate: true
       })
-      this.removeScrollListener()
-      this.addScrollListener()
     }
     // 是否映射
     if (useConfig.reflect) {
@@ -272,14 +296,15 @@ export default class PageModel {
 
   // 监听滚动事件
   addScrollListener() {
-    if (!this.isListenScroll) {
+    if (!this.unwatchScroll) {
       this.containerRef.addEventListener('scroll', this.listenScrollFn = this.handleTableScroll.bind(this))
-      window.addEventListener('resize', this.listenResizeFn = this.handleTableResize.bind(this))
+      window.addEventListener('resize', this.listenResizeFn = debounce(this.setTableWrapWidth.bind(this), 200))
     }
   }
   // 移除滚动事件
   removeScrollListener() {
-    if (this.isListenScroll) {
+    if (this.unwatchScroll) {
+      this.unwatchScroll = null
       this.containerRef.removeEventListener('scroll', this.listenScrollFn)
       window.removeEventListener('resize', this.listenResizeFn)
     }
@@ -291,21 +316,17 @@ export default class PageModel {
 
   setScrollLeft(scrollLeft: number) {
     this.scrollLeft = scrollLeft
-    this.transformScroll = {
-      transform: `translateX(${scrollLeft}px)`
-    }
   }
 
   // 设置宽度
-  handleTableResize() {
+  setTableWrapWidth() {
+    console.log('x')
     this.wrapWidth = 'auto'
     setTimeout(() => {
-      this.setTableWidth()
+      this.wrapWidth = getComputedStyle(this.$refs.ptable.$el.querySelector('table')).width
     }, 50)
   }
-  setTableWidth() {
-    this.wrapWidth = getComputedStyle(this.context.$refs.ptable.$el.querySelector('table')).width
-  }
+
   export(mode: 0 | 1) {
     const useConfig = this.useConfig
     let url = this.useConfig.exportUrl

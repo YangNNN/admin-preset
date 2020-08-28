@@ -42,10 +42,14 @@ export default {
     } else {
       menu = findAvailableMenu(permissionMenus)
     }
-    if (!menu) {
-      next('/404')
-    } else {
-      next(menu.muUrl)
+    try {
+      if (!menu) {
+        next('/404')
+      } else {
+        next(menu.muUrl)
+      }
+    } catch (error) {
+      console.log(error)      
     }
   }
 }

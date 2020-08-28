@@ -3,7 +3,7 @@
  * @author yangshangman
  */
 
-import { getType } from '@/utils/index.js'
+import { getType } from '@/utils'
 
 /**
  * 包裹一个函数 返回新函数或者一个结果

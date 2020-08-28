@@ -1,12 +1,20 @@
-import $axios from '@/utils/ajax'
 import config from '@/config'
+import $axios from '@/utils/ajax'
+
+interface NewFile extends File {
+  newname: string;
+  source: {
+    token: string
+  }
+}
 
 // 获得上传token
 function getUploadToken() {
   return $axios.post('config.qiniu.tokenUrl', {}, { process: false })
 }
+
 // 上传单个文件
-export const uploadFile = (file, onUploadProgress) => {
+export const uploadFile = (file: NewFile, onUploadProgress: any) => {
   return new Promise(async(resolve, reject) => {
     try {
       const [, detailtype] = file.type.split('/')

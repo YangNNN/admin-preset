@@ -1,7 +1,7 @@
 <template>
   <div ref="pageModelContainer" class="pagemodel-container">
     <div v-show="!isShowForm" class="main-content">
-      <div :style="[pagemodel.transformScroll]">
+      <div :style="[transformScroll]">
         <!-- 头部插槽 -->
         <slot name="top" />
         <!-- 头部 -->
@@ -35,7 +35,7 @@
         <!-- 表格底部插槽 -->
         <slot name="bottom" />
       </div>
-      <div v-if="pagemodel.useConfig.table.pagination" class="pagination-wrap" :style="[pagemodel.transformScroll]">
+      <div v-if="pagemodel.useConfig.table.pagination" class="pagination-wrap" :style="[transformScroll]">
         <el-pagination
           background
           :current-page="pagemodel.table.currentPage"
@@ -106,6 +106,11 @@ export default {
     }
   },
   computed: {
+    transformScroll() {
+      return {
+        transform: `translateX(${this.pagemodel.scrollLeft}px)`
+      }
+    },
     ...mapState({
       scrollTop: state => state.page.scrollTop
     })
@@ -137,7 +142,7 @@ export default {
   methods: {
     // 初始化页面
     init() {
-      this.pagemodel.init()
+      this.pagemodel.initPage()
     },
     scrollTo(scrollTop) {
       this.pagemodel.containerRef.scrollTo(0, scrollTop)

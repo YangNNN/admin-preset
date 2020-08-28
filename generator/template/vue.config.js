@@ -37,7 +37,8 @@ module.exports = {
       'Qs': 'Qs',
       'js-cookie': 'Cookies',
       'clipboard': 'ClipboardJS',
-      'fuse.js': 'Fuse'
+      'fuse.js': 'Fuse',
+      'axios': 'axios'
     }
   },
   chainWebpack(config) {

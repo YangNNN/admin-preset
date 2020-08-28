@@ -66,9 +66,11 @@ module.exports.hooks = (api) => {
     const lines = shimsVueDTsFileContent.split(/\r?\n/g)
     try {
       const declares = [
+        `declare module 'nprogress'`,
         `declare module 'element-ui'`,
         `declare module 'js-cookie'`,
         `declare module 'vue-amap'`,
+        `declare module 'axios'`,
         `declare module 'Qs'`,
         `declare module '@/router/*.ts'`,
         `declare module '@/router/modules/*.js'`,
@@ -76,6 +78,7 @@ module.exports.hooks = (api) => {
         `declare module '@/utils/*'`,
         `declare module '@/frame/*'`,
         `declare module '@/styles/*'`
+        `declare module '@/config/*'`
       ]
       declares.forEach(declare => {
         lines.push(`${EOL} ${declare}`)

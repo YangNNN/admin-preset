@@ -1,6 +1,7 @@
 <template>
   <div style="height: 100%">
-    <page-model 
+    <page-model
+      :reflections="reflections"
       :config="config"
     />
   </div>
@@ -10,8 +11,13 @@
 export default {
   data() {
     return {
+      reflections: {
+        users: []
+      },
       config: {
+        reflect: true,
         isWatch: true,
+        overflowScroll: true,
         size: 'mini',
         url: '/Project/Type',
         delUrl: '/Project/Type/:id',
@@ -26,6 +32,15 @@ export default {
               eType: 'el-input',
               label: '用户昵称',
               prop: 'projectName'
+            },
+            {
+              eType: 'el-select',
+              label: '选择用户',
+              prop: 'mId',
+              optionsData: {
+                _reflect: 'users',
+                list: []
+              }
             }
           ]
         },
@@ -100,6 +115,16 @@ export default {
       deep: true,
       immediate: true
     }
+  },
+  mounted() {
+    setTimeout(() => {
+      this.reflections.users = [
+        {
+          label: '用户1',
+          value: 1
+        }
+      ]
+    }, 3000);
   },
   methods: {
   }

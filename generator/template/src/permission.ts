@@ -1,15 +1,15 @@
-import router from './router'
-import store from './store'
+import { getToken } from '@/utils/auth' // get token from cookie
 import { Message } from 'element-ui'
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
-import { getToken } from '@/utils/auth' // get token from cookie
 import pathToRegexp from 'path-to-regexp'
+import router from './router'
+import store from './store'
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
 const whiteList = ['/login', '/401', '/404', '/auth-redirect', '/homepage']
 
-function checkValid(menus, path) {
+function checkValid(menus: any, path: string) {
   let isVlaid = false
   for (let i = 0; i < menus.length; i++) {
     const menu = menus[i]
@@ -30,7 +30,7 @@ function checkValid(menus, path) {
   return isVlaid
 }
 
-function powerValid(path, next) {
+function powerValid(path: string, next: Function) {
   if (~whiteList.indexOf(path)) {
     next()
   } else {
@@ -39,14 +39,14 @@ function powerValid(path, next) {
       next()
     } else {
       const totalMenus = store.getters.totalMenus
-      const isFound = totalMenus.find(menu => menu.muUrl === path)
+      const isFound = totalMenus.find((menu: { muUrl: string }) => menu.muUrl === path)
       next(isFound ? '/401' : '/404')
     }
   }
   NProgress.done()
 }
 
-router.beforeEach(async(to, from, next) => {
+router.beforeEach(async(to: any, from: any, next: Function) => {
   // start progress bar
   NProgress.start()
   // determine whether the user has logged in
@@ -71,7 +71,6 @@ router.beforeEach(async(to, from, next) => {
         }
       }
     } catch (error) {
-      console.log(error)
       next(`/login?redirect=${to.path}`)
       NProgress.done()
     }

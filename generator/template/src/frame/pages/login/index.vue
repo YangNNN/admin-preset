@@ -115,7 +115,7 @@ export default {
     async checkLogin() {
       try {
         await this.$store.dispatch('user/checkLogin')
-        this.$router.push('/')
+        this.$router.push('/homepage')
       } catch (error) {
         //
       }
@@ -151,7 +151,7 @@ export default {
             await this.$store.dispatch('user/getPower')
             let redirect = this.redirect
             if (!redirect || redirect === '/login') {
-              redirect = '/'
+              redirect = '/homepage'
             }
             this.$router.push({ path: redirect, query: this.otherQuery })
           } catch (error) {

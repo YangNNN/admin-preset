@@ -3,7 +3,16 @@
  * @author yangshangman
  */
 
-export default {
+interface ProvideMixin {
+  inject: Array<string>,
+  computed: {
+    pagemodel: (this: any) => any,
+    useConfig: (this: any) => any,
+    context: (this: any) => any
+  }
+}
+
+const provideMixin: ProvideMixin = {
   inject: ['provideData'],
   computed: {
     pagemodel() {
@@ -17,3 +26,5 @@ export default {
     }
   }
 }
+
+export default provideMixin
