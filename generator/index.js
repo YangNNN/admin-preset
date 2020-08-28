@@ -77,7 +77,7 @@ module.exports.hooks = (api) => {
         `declare module '@/store/*.js'`,
         `declare module '@/utils/*'`,
         `declare module '@/frame/*'`,
-        `declare module '@/styles/*'`
+        `declare module '@/styles/*'`,
         `declare module '@/config/*'`
       ]
       declares.forEach(declare => {
