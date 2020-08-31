@@ -10,7 +10,7 @@ interface NewFile extends File {
 
 // 获得上传token
 function getUploadToken() {
-  return $axios.post('config.qiniu.tokenUrl', {}, { process: false })
+  return $axios.post(config.qiniu.tokenUrl, {}, { process: false })
 }
 
 // 上传单个文件
@@ -18,7 +18,7 @@ export const uploadFile = (file: NewFile, onUploadProgress: any) => {
   return new Promise(async(resolve, reject) => {
     try {
       const [, detailtype] = file.type.split('/')
-      const token = await getUploadToken()
+      const {data: token} = await getUploadToken()
       const formData = new FormData()
       const date = new Date()
       const _y = date.getFullYear()
@@ -29,7 +29,7 @@ export const uploadFile = (file: NewFile, onUploadProgress: any) => {
       formData.append('file', file)
       formData.append('key', name)
       formData.append('token', token)
-      const fileResult = await $axios.post(config.qiniu.uploadUrl, formData, {
+      const {data: fileResult} = await $axios.post(config.qiniu.uploadUrl, formData, {
         onUploadProgress,
         cancelToken: file.source.token,
         process: false
