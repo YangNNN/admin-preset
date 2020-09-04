@@ -1,5 +1,5 @@
 <template>
-  <div ref="pageModelContainer" class="pagemodel-container">
+  <div ref="pageModelContainer" class="manager-container">
     <div v-show="!isShowForm" class="main-content">
       <div :style="[transformScroll]">
         <!-- 头部插槽 -->
@@ -22,7 +22,7 @@
       <!-- 表格数据 -->
       <div
         class="table-wrap"
-        :style="{ width: pagemodel.wrapWidth }"
+        :style="{ width: manager.wrapWidth }"
       >
         <ptable
           ref="ptable"
@@ -35,14 +35,14 @@
         <!-- 表格底部插槽 -->
         <slot name="bottom" />
       </div>
-      <div v-if="pagemodel.useConfig.table.pagination" class="pagination-wrap" :style="[transformScroll]">
+      <div v-if="manager.useConfig.table.pagination" class="pagination-wrap" :style="[transformScroll]">
         <el-pagination
           background
-          :current-page="pagemodel.table.currentPage"
-          :page-sizes="pagemodel.table.sizes"
-          :page-size="pagemodel.table.pageSize"
+          :current-page="manager.table.currentPage"
+          :page-sizes="manager.table.sizes"
+          :page-size="manager.table.pageSize"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="pagemodel.table.pageTotal"
+          :total="manager.table.pageTotal"
           @size-change="onTableSizeChange"
           @current-change="onTableCurrentChange"
         />
@@ -50,10 +50,10 @@
     </div>
     <!-- 表单 -->
     <pop-show-form
-      v-if="pagemodel.hasForm"
+      v-if="manager.hasForm"
       ref="popShowForm"
       :has-top-close="false"
-      :is-use-tabs="pagemodel.isUseTabs"
+      :is-use-tabs="manager.isUseTabs"
       @close="closeForm"
     >
       <page-form
@@ -72,7 +72,7 @@ import PageForm from './page-form/index.vue'
 import PopShowForm from './pop-show-form/index.vue'
 import { phead, psearch, ptable, exportForm } from './components'
 import systemConfig from '@/config'
-import PageModel from './utils/pagemodel'
+import PageManager from './utils/page-manager'
 import { mapState } from 'vuex'
 
 export default {
@@ -98,17 +98,17 @@ export default {
   data() {
     return {
       provideData: {
-        pagemodel: {}
+        manager: {}
       },
       isShowForm: false,
-      pagemodel: {}, // 组件实例
+      manager: {}, // 组件实例
       routeName: '' // 页面name
     }
   },
   computed: {
     transformScroll() {
       return {
-        transform: `translateX(${this.pagemodel.scrollLeft}px)`
+        transform: `translateX(${this.manager.scrollLeft}px)`
       }
     },
     ...mapState({
@@ -122,10 +122,10 @@ export default {
   },
   created() {
     this.routeName = this.$route.name
-    this.provideData.pagemodel = this.pagemodel = new PageModel(this)
+    this.provideData.manager = this.manager = new PageManager(this)
   },
   mounted() {
-    if (this.pagemodel.useConfig.init) {
+    if (this.manager.useConfig.init) {
       this.init()
     }
   },
@@ -133,7 +133,7 @@ export default {
     // 存储位置信息
     this.$store.commit('page/SET_SCROLL_TOP', {
       name: this.routeName,
-      scrollTop: this.pagemodel.containerRef.scrollTop
+      scrollTop: this.manager.containerRef.scrollTop
     })
   },
   activated() {
@@ -142,39 +142,39 @@ export default {
   methods: {
     // 初始化页面
     init() {
-      this.pagemodel.initPage()
+      this.manager.initPage()
     },
     scrollTo(scrollTop) {
-      this.pagemodel.containerRef.scrollTo(0, scrollTop)
+      this.manager.containerRef.scrollTo(0, scrollTop)
     },
     // 重新开始执行查询 设置页数为1
     search() {
-      this.pagemodel.search()
+      this.manager.search()
     },
     onTableSizeChange(val) {
-      const table = this.pagemodel.table
+      const table = this.manager.table
       table.currentPage = 1
       table.pageSize = val
       this.refreshTableData()
     },
     // 刷新数据
     refreshTableData() {
-      return this.pagemodel.refreshTableData()
+      return this.manager.refreshTableData()
     },
     // 页码点击事件
     onTableCurrentChange(val) {
       this.scrollTo(0)
-      this.pagemodel.getTableData(val)
+      this.manager.getTableData(val)
     },
     activated() {
-      this.pagemodel.addScrollListener()
+      this.manager.addScrollListener()
     },
     deactivated() {
-      this.pagemodel.removeScrollListener()
+      this.manager.removeScrollListener()
     },
     destroyed() {
-      this.pagemodel.removeScrollListener()
-      this.pagemodel.destroyed()
+      this.manager.removeScrollListener()
+      this.manager.destroyed()
     },
     /**
      * appendKeyInfo 识别字段
@@ -182,7 +182,7 @@ export default {
      * data 添加数据列表
     */
     appendData(appendKeyInfo = {}, appendInfo = {}, data = []) {
-      const list = this.pagemodel.table.data.map(item => {
+      const list = this.manager.table.data.map(item => {
         const info = data.find(iitem => item[appendKeyInfo.to] === iitem[appendKeyInfo.from])
         if (info) {
           for (const k in appendInfo) {
@@ -195,7 +195,7 @@ export default {
     },
     // 设置新数据
     setData(data) {
-      this.pagemodel.table.data = data
+      this.manager.table.data = data
     },
     // 触发事件
     emitEvent(row, $index, event) {
@@ -214,12 +214,12 @@ export default {
     onSortChange({ column, prop, order }) {
       let data = {}
       if (order) {
-        const table = this.pagemodel.useConfig.table
+        const table = this.manager.useConfig.table
         const valueIndex = table['sort-orders'].findIndex(value => value === order)
         const columnData = table.els.find(item => item.label === column.label)
         data = columnData.sortValue[valueIndex]
       }
-      this.pagemodel.sortParams = data
+      this.manager.sortParams = data
       this.refreshTableData()
     },
     // 显示新增弹出层
@@ -247,7 +247,7 @@ export default {
       this.$refs.exportForm.show()
     },
     onExport(mode) {
-      this.pagemodel.export(mode)
+      this.manager.export(mode)
     },
     // 添加 && 修改操作
     onSuccess() {
@@ -260,7 +260,7 @@ export default {
       await this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
         type: 'warning'
       })
-      const useConfig = this.pagemodel.useConfig
+      const useConfig = this.manager.useConfig
       const delKey = useConfig.delKey
       await this.$axios[useConfig.delMethod](useConfig.delUrl, {
         [delKey]: row[delKey]
@@ -274,7 +274,7 @@ export default {
 </script>
 
 <style lang="scss">
-.pagemodel-container {
+.manager-container {
   height: calc(100vh - 50px);
   position: relative;
   overflow-x: auto;
@@ -306,7 +306,7 @@ export default {
   }
 }
 .hasTagsView {
-  .pagemodel-container {
+  .manager-container {
     height: calc(100vh - 84px);
   }
 }

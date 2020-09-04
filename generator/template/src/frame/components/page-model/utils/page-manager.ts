@@ -5,13 +5,13 @@
 
 import systemConfig from '@/config';
 import { debounce, isFunction, objectMerge } from '@/utils';
-import getPageDefaultModel from './model';
+import { getPageDefaultConfig } from './model';
 import ReflectRelation from './reflect';
 
 /**
  * PageModel类声明
  */
-interface PageModelInterface {
+interface PageManagerInterface {
   context: any; // 组件实例
   containerRef: Document; // 组件根节点
   useConfig: any; // 转化后使用的config
@@ -49,8 +49,7 @@ interface watches extends Array<Function> {
   reflect?: any
 }
 
-
-export default class PageModel implements PageModelInterface {
+export default class PageManager implements PageManagerInterface {
   context: any;
   containerRef!: Document;
   useConfig: any;
@@ -70,6 +69,7 @@ export default class PageModel implements PageModelInterface {
   reflectionWatches!: watches | null;
   $refs!: any;
   [propName: string]: any;
+  static defaultConfig: any;
   constructor(context: any) {
     this.context = context
     this.useConfig = {}
@@ -83,6 +83,10 @@ export default class PageModel implements PageModelInterface {
     this.initModel()
   }
   
+  static setDefaultConfig(config: any) {
+    this.defaultConfig = objectMerge(getPageDefaultConfig(), config)
+  }
+
   // 初始化模型配置数据
   initModel() {
     this.setModelConfig()
@@ -94,7 +98,7 @@ export default class PageModel implements PageModelInterface {
    */
   setModelConfig() {
     const context = this.context
-    const config = objectMerge(getPageDefaultModel(), context.config)
+    const config = objectMerge(PageManager.defaultConfig, context.config)
     let elsCount = 0
     let elWidthChildrenCount = 0
     function filterEls(els: Array<any>, context: any) {
@@ -119,12 +123,7 @@ export default class PageModel implements PageModelInterface {
     config.addUrl = config.addUrl || config.url
     config.updUrl = config.updUrl || config.url
     config.delUrl = config.delUrl || config.url
-
-    config.getMethod = config.getMethod || 'get'
-    config.addMethod = config.addMethod || 'post'
-    config.updMethod = config.updMethod || 'put'
-    config.delMethod = config.delMethod || 'delete'
-
+    
     this.setValue('useConfig', config)
     this.setValue('table', {
       isLoading: false, // 是否正在加载
@@ -256,7 +255,7 @@ export default class PageModel implements PageModelInterface {
       this.unwatchScroll = context.$watch('table.data', {
         handler() {
           this.$nextTick(() => {
-            this.pagemodel.setTableWrapWidth()
+            this.manager.setTableWrapWidth()
           })
         },
         deep: true,

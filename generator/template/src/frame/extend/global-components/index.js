@@ -3,7 +3,6 @@ function resolveBaseComponent(path) {
 }
 
 const baseRegisters = [
-  'page-model', // 页面模板
   'img-upload', // 图片上传组件
   'file-upload', // 文件上传组件
   'editor', // 编辑器组件

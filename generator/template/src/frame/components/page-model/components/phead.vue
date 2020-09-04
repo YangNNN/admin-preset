@@ -1,5 +1,5 @@
 <template>
-  <div v-if="hasTopBar || pagemodel.hasSearch" class="model-head">
+  <div v-if="hasTopBar || manager.hasSearch" class="model-head">
     <div v-if="hasTopBar" class="topbar-btns">
       <el-button
         v-if="useConfig.addUrl"
@@ -25,9 +25,9 @@
         </el-button>
       </template>
     </div>
-    <div v-if="pagemodel.hasSearch" class="toggle-expand" @click="onToggleExpand">
-      <span>{{ pagemodel.isSearchExpand ? '收起' : '展开' }}</span>
-      <i :class="[pagemodel.isSearchExpand ? 'el-icon-caret-top' : 'el-icon-caret-bottom']" />
+    <div v-if="manager.hasSearch" class="toggle-expand" @click="onToggleExpand">
+      <span>{{ manager.isSearchExpand ? '收起' : '展开' }}</span>
+      <i :class="[manager.isSearchExpand ? 'el-icon-caret-top' : 'el-icon-caret-bottom']" />
     </div>
   </div>
 </template>
@@ -65,7 +65,7 @@ export default {
   methods: {
     wrapIconClass,
     onToggleExpand() {
-      this.pagemodel.setValue('isSearchExpand', !this.pagemodel.isSearchExpand)
+      this.manager.setValue('isSearchExpand', !this.manager.isSearchExpand)
     },
     onClickTopBtn(event) {
       this.$emit('custom', event)

@@ -1,5 +1,5 @@
 <template>
-  <div class="form-page" :class="{ 'use-tab': pagemodel.isUseTabs }">
+  <div class="form-page" :class="{ 'use-tab': manager.isUseTabs }">
     <el-form
       v-if="formData"
       ref="commonForm"
@@ -13,7 +13,7 @@
     >
 
       <!-- 普通表单 -->
-      <template v-if="!pagemodel.isUseTabs">
+      <template v-if="!manager.isUseTabs">
         <formEls :els="formEls" :context="contextInThisComponent" :form-data="formData" :static-data="staticData" />
         <el-col>
           <el-form-item>

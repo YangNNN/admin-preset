@@ -12,7 +12,7 @@
         :collapse-transition="false"
         mode="vertical"
       >
-        <sidebar-item v-for="route in permissionMenus" :key="route.muUrl" :item="route" />
+        <sidebar-item v-for="route in allowedMenus" :key="route.muUrl" :item="route" />
       </el-menu>
     </el-scrollbar>
   </div>
@@ -65,7 +65,7 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'permissionMenus',
+      'allowedMenus',
       'sidebar'
     ]),
     activeMenu() {
@@ -88,14 +88,14 @@ export default {
     }
   },
   watch: {
-    permissionMenus: {
+    allowedMenus: {
       handler() {
-        if (this.permissionMenus) {
+        if (this.allowedMenus) {
           if (!this.flatedRoutes) {
             this.flatedRoutes = flatRoutes(routes)
           }
           const flatedRoutes = this.flatedRoutes
-          return addHiddenToMenu(this.permissionMenus, flatedRoutes)
+          return addHiddenToMenu(this.allowedMenus, flatedRoutes)
         } else {
           return []
         }

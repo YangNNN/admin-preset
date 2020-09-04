@@ -1,5 +1,5 @@
 import Layout from '@/frame/layout'
-import moduleRouters from '@/router/modules/pages.js'
+import moduleRouters from '@/router/modules/pages'
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 

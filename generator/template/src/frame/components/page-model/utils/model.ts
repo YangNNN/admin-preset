@@ -1,12 +1,21 @@
 /**
- * @file 返回默认模板数据
+ * @file 返回默认模板数据和默认使用方法
  * @author yangshangman
  */
 
-export default function() {
+ /**
+  * 导出默认配置
+  */
+export const getPageDefaultConfig = () => {
   return {
     init: true,
     size: 'default',
+
+    getMethod: 'get',
+    addMethod: 'post',
+    updMethod: 'put',
+    delMethod: 'delete',
+
     searchForm: {
       isopen: true,
       labelWidth: '100px',

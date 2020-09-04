@@ -102,7 +102,11 @@ export default {
     }
   },
   created() {
-    this.checkLogin()
+    try {
+      this.checkLogin()
+    } catch (error) {
+      
+    }
   },
   mounted() {
     if (this.loginForm.account === '') {

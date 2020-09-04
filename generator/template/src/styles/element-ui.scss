@@ -111,25 +111,25 @@
   &.el-button--default {
     min-width: 95px!important;
   }
-  &.el-button--primary {
-    background-color: $theme!important;
-    border-color: $theme!important;
-    &:hover {
-      background-color: $themeHover!important;
-      border-color: $themeHover!important;
-    }
-    &:active {
-      background-color: $themeActive!important;
-      border-color: $themeActive!important;
-    }
-    &.is-disabled {
-      background-color: $themeDisabled!important;
-      border-color: $themeDisabled!important;
-    }
-  }
-  &.el-button--text {
-    color: $buttonText;
-  }
+  // &.el-button--primary {
+  //   background-color: $theme!important;
+  //   border-color: $theme!important;
+  //   &:hover {
+  //     background-color: $themeHover!important;
+  //     border-color: $themeHover!important;
+  //   }
+  //   &:active {
+  //     background-color: $themeActive!important;
+  //     border-color: $themeActive!important;
+  //   }
+  //   &.is-disabled {
+  //     background-color: $themeDisabled!important;
+  //     border-color: $themeDisabled!important;
+  //   }
+  // }
+  // &.el-button--text {
+  //   color: $buttonText;
+  // }
 }
 
 .el-form {

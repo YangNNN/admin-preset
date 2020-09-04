@@ -1,5 +1,5 @@
-import * as filters from './filters'
 import * as directive from './directive'
+import * as filters from './filters'
 import * as globalComponents from './global-components'
 import * as prototype from './prototype'
 

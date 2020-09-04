@@ -1,6 +1,8 @@
 module.exports = {
   title: 'Vue Element Admin',
 
+  theme: '#42b983',
+
   /**
    * @type {boolean} true | false
    * @description Whether show the settings right-panel

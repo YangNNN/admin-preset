@@ -7,11 +7,11 @@ export default [{
   children: [
     {
       path: '/page/memberManage',
-      component: () => import('@/pages/user'),
+      component: () => import('@/pages/user/index.vue'),
     },
     {
       path: '/page/workManage',
-      component: () => import('@/pages/type')
+      component: () => import('@/pages/type/index.vue')
     }
   ]
 }]

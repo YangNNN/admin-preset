@@ -6,7 +6,7 @@
 interface ProvideMixin {
   inject: Array<string>,
   computed: {
-    pagemodel: (this: any) => any,
+    manager: (this: any) => any,
     useConfig: (this: any) => any,
     context: (this: any) => any
   }
@@ -15,14 +15,14 @@ interface ProvideMixin {
 const provideMixin: ProvideMixin = {
   inject: ['provideData'],
   computed: {
-    pagemodel() {
-      return this.provideData.pagemodel
+    manager() {
+      return this.provideData.manager
     },
     useConfig() {
-      return this.pagemodel.useConfig
+      return this.manager.useConfig
     },
     context() {
-      return this.pagemodel.context
+      return this.manager.context
     }
   }
 }

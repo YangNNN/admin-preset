@@ -1,8 +1,7 @@
-import variables from '@/styles/element-variables.scss'
-import Cookie from 'js-cookie'
 import defaultSettings from '@/settings'
 import { isDef } from '@/utils'
-const { showSettings, tagsView, fixedHeader, sidebarLogo } = defaultSettings
+import Cookie from 'js-cookie'
+const { showSettings, tagsView, fixedHeader, sidebarLogo, theme } = defaultSettings
 
 const cookieSetting = {
   theme: Cookie.get('theme'),
@@ -16,7 +15,7 @@ function isTrue(val) {
 }
 
 const state = {
-  theme: isDef(cookieSetting.theme) ? cookieSetting.theme : variables.theme,
+  theme: isDef(cookieSetting.theme) ? cookieSetting.theme : theme,
   showSettings: showSettings,
   tagsView: isDef(cookieSetting.tagsView) ? isTrue(cookieSetting.tagsView) : tagsView,
   fixedHeader: isDef(cookieSetting.fixedHeader) ? isTrue(cookieSetting.fixedHeader) : fixedHeader,

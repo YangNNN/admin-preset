@@ -12,7 +12,7 @@ const state = {
   roCode: null, // 角色code
   powerCodes: null, // 权限code列表
   totalMenus: null, // 全部菜单
-  permissionMenus: null // 允许的菜单
+  allowedMenus: null // 允许的菜单
 }
 
 const mutations = {
@@ -34,8 +34,8 @@ const mutations = {
   SET_TOTAL_MENU: (state, totalMenus) => {
     state.totalMenus = totalMenus
   },
-  SET_PERMISSION_MENU: (state, permissionMenus) => {
-    state.permissionMenus = permissionMenus
+  SET_ALLOWED_MENU: (state, allowedMenus) => {
+    state.allowedMenus = allowedMenus
   }
 }
 
@@ -109,13 +109,13 @@ const actions = {
           menus.push(config.testPage)
           powerCodes.push(config.testPage.muCode)
         }
-        let permissionMenus = menus.filter(menu => {
+        let allowedMenus = menus.filter(menu => {
           return powerCodes.includes(menu.muCode)
         })
-        permissionMenus = tree(permissionMenus, 'muCode', 'pmuCode', 'sort', 1)
+        allowedMenus = tree(allowedMenus, 'muCode', 'pmuCode', 'sort', 1)
         commit('SET_POWER_CODES', powerCodes)
         commit('SET_TOTAL_MENU', menus)
-        commit('SET_PERMISSION_MENU', permissionMenus)
+        commit('SET_ALLOWED_MENU', allowedMenus)
         resolve(powers)
       }
       const staticMenus = config.staticMenus
@@ -148,7 +148,7 @@ const actions = {
       commit('SET_RO_CODE', '')
       commit('SET_POWER_CODES', null)
       commit('SET_TOTAL_MENU', null)
-      commit('SET_PERMISSION_MENU', null)
+      commit('SET_ALLOWED_MENU', null)
       removeToken()
       removeUserInfo()
       resetRouter()

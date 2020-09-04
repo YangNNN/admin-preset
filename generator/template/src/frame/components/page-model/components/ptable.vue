@@ -78,7 +78,7 @@ export default {
   },
   computed: {
     table() {
-      return this.pagemodel.table
+      return this.manager.table
     },
     useConfigTable() {
       return this.useConfig.table || {}

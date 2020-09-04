@@ -26,21 +26,21 @@ function findAvailableMenu(menus) {
 }
 export default {
   beforeRouteEnter(to, from, next) {
-    const permissionMenus = store.state.user.permissionMenus
-    if (!permissionMenus) {
+    const allowedMenus = store.state.user.allowedMenus
+    if (!allowedMenus) {
       next('/login')
       return
     }
     let menu = null
     if (config.homePage) {
-      const menus = findDataFromTree(permissionMenus, 'muUrl', config.homePage.muUrl)
+      const menus = findDataFromTree(allowedMenus, 'muUrl', config.homePage.muUrl)
       if (menus && menus[0]) {
         menu = menus.slice(-1)[0]
       } else {
-        menu = findAvailableMenu(permissionMenus)
+        menu = findAvailableMenu(allowedMenus)
       }
     } else {
-      menu = findAvailableMenu(permissionMenus)
+      menu = findAvailableMenu(allowedMenus)
     }
     try {
       if (!menu) {

@@ -1,6 +1,6 @@
 <template>
-  <div v-if="pagemodel.hasSearch" class="model-search">
-    <div v-show="pagemodel.isSearchExpand">
+  <div v-if="manager.hasSearch" class="model-search">
+    <div v-show="manager.isSearchExpand">
       <el-form
         class="search-form model-form"
         :model="searchForm"

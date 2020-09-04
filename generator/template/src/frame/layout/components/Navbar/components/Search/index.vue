@@ -36,7 +36,7 @@ export default {
   },
   computed: {
     routes() {
-      return this.$store.getters.permissionMenus
+      return this.$store.getters.allowedMenus
     }
   },
   watch: {
