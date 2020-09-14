@@ -24,7 +24,7 @@ export default {
       default: 'image'
     },
     progress: {
-      type: Array,
+      type: Object,
       default: () => ({})
     }
   },
