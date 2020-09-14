@@ -4,7 +4,7 @@
  */
 
 import systemConfig from '@/config';
-import { debounce, isFunction, objectMerge } from '@/utils';
+import { debounce, isFunction, jsonClone, objectMerge } from '@/utils';
 import { getPageDefaultConfig } from './model';
 import ReflectRelation from './reflect';
 
@@ -98,7 +98,7 @@ export default class PageManager implements PageManagerInterface {
    */
   setModelConfig() {
     const context = this.context
-    const config = objectMerge(PageManager.defaultConfig, context.config)
+    const config = objectMerge(jsonClone(PageManager.defaultConfig), context.config)
     let elsCount = 0
     let elWidthChildrenCount = 0
     function filterEls(els: Array<any>, context: any) {
