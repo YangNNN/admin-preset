@@ -4,7 +4,10 @@ module.exports = {
   /**
    * @description 请求地址
    */
-  baseUrl: isProduction ? 'http://pro.xxx.com' : 'http://xxx.xxx.com',
+  // baseUrl: isProduction ? 'http://pro.xxx.com' : 'http://xxx.xxx.com',
+  baseUrl: isProduction ? 'http://pro.xxx.com' : 'https://localhost:44381',
+
+  staticMenus: require('./staticMenus'),
 
   useSignalr: false,
   signalrApi: '',

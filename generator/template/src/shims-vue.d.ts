@@ -4,6 +4,7 @@ declare module '*.vue' {
 }
 
 declare module 'nprogress'
+declare module 'lodash/*'
 declare module 'element-ui'
 declare module 'js-cookie'
 declare module 'vue-amap'

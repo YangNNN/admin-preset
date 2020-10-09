@@ -15,7 +15,6 @@ export default {
     })
   },
   beforeMount() {
-    console.log(this.theme)
     theme.updateTheme(this.theme)
   }
 }

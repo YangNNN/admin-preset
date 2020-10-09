@@ -42,7 +42,8 @@ module.exports = api => {
       "path-to-regexp": "^3.2.0",
       "screenfull": "^5.0.2",
       "vue-amap": "^0.5.10",
-      "element-ui": "^2.13.2"
+      "element-ui": "^2.13.2",
+      "lodash": "^4.17.20"
     },
     "devDependencies": {
       "svg-sprite-loader": "^5.0.0",
@@ -67,6 +68,7 @@ module.exports.hooks = (api) => {
     try {
       const declares = [
         `declare module 'nprogress'`,
+        `declare module 'lodash/*'`
         `declare module 'element-ui'`,
         `declare module 'js-cookie'`,
         `declare module 'vue-amap'`,
@@ -87,7 +89,7 @@ module.exports.hooks = (api) => {
     // 重写main.ts
     const mainContent = `
     import * as extendVue from '@/frame/extend/index.js'
-    import * as PageModel from '@/frame/extend/plugin/page-model'
+    import * as PageModel from '@/frame/extend/plugin/page-model/index'
     import '@/frame/icons' // icon
     import '@/styles/index.scss' // global css
     import $axios from '@/utils/ajax'

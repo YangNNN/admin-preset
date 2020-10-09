@@ -1,13 +1,23 @@
 <template>
   <div v-show="popShow" class="pop-show-container" :class="{ 'use-tab': isUseTabs }">
-    <Sticky v-if="hasTopClose" :z-index="10">
-      <div class="sticky-bar">
-        <el-button type="warning" @click="hide">关闭</el-button>
-      </div>
-    </Sticky>
-    <div class="form-content">
+
+    <!-- 弹窗表单 -->
+    <el-dialog v-if="dialog.isDialog" :visible.sync="popShow" :title="dialog.title">
       <slot />
-    </div>
+    </el-dialog>
+
+    <!-- 不是弹窗 -->
+    <template v-else>
+      <Sticky v-if="hasTopClose" :z-index="10">
+        <div class="sticky-bar">
+          <el-button type="warning" @click="hide">关闭</el-button>
+        </div>
+      </Sticky>
+      <div class="form-content">
+        <slot />
+      </div>
+    </template>
+
   </div>
 </template>
 
@@ -25,6 +35,10 @@ export default {
     isUseTabs: {
       type: Boolean,
       default: false
+    },
+    dialog: {
+      type: Object,
+      default: () => ({})
     }
   },
   data() {

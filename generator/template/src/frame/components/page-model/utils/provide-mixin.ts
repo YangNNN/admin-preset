@@ -4,7 +4,7 @@
  */
 
 interface ProvideMixin {
-  inject: Array<string>,
+  inject: string[],
   computed: {
     manager: (this: any) => any,
     useConfig: (this: any) => any,

@@ -6,12 +6,12 @@ export default [{
   hidden: true,
   children: [
     {
-      path: '/page/memberManage',
-      component: () => import('@/pages/user/index.vue'),
+      path: '/edu/config/class-type',
+      component: () => import('@/pages/education/config/class-type/index.vue'),
     },
     {
-      path: '/page/workManage',
-      component: () => import('@/pages/type/index.vue')
+      path: '/edu/student/student',
+      component: () => import('@/pages/education/student/student/index.vue')
     }
   ]
 }]

@@ -69,11 +69,11 @@ export const dateFormat = function(date: any, formatStr = 'yyyy-MM-dd') {
 
 export function debounce(func: Function, interval: number) {
   let canIExcute = true
-  return function() {
+  return function(...arg: any) {
     if (canIExcute) {
       canIExcute = false
       setTimeout(() => {
-        func && func()
+        func && func(...arg)
         canIExcute = true
       }, interval)
     }
@@ -363,6 +363,9 @@ export const createCDNSources = (libname: any, version: any) => {
   ]
 }
 
+/**
+ * 生成唯一id
+ */
 export const guid = function() {
   function S4() {
     return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1)
@@ -396,4 +399,71 @@ export const combineReqData = function(formData: { [x: string]: any }) {
     })
   }
   return data
+}
+
+/**
+ * 比较两个列表数据的不同，返回新增、更新和删除的数据
+ * @param { Array } oldlist 旧列表数据
+ * @param { Array } newlist 新的列表数据
+ * @param { String } compareKey 比较的key、id
+ * @returns { Object } 返回数据结构{ adds: [], dels: [], updates: [], isModify: true | false }
+ */
+export const compareList = function(oldlist: any[], newlist: any[], compareKey: string)
+ : { adds: any[], dels: any[], updates: any[], isModify: boolean}
+ {
+  let adds = newlist.slice(), dels = [], updates = []
+  const compareEqual = (obj1: any, obj2: any) => {
+    if (Object.keys(obj1).length !== Object.keys(obj2).length) {
+      return false
+    }
+    for (const k in obj1) {
+      if (obj1[k] !== obj2[k]) {
+        return false
+      }
+    }
+    return true
+  }
+  for (let i = 0; i < oldlist.length; i++) {
+    const olditem = oldlist[i]
+    let isExsit = false
+    for (let j = 0; j < newlist.length ; j ++) {
+      const newitem = newlist[j]
+      if (olditem[compareKey] === newitem[compareKey]) {
+        // 比较是否更新
+        isExsit = true
+        if (!compareEqual(olditem, newitem)) {
+          updates.push(newitem)
+        }
+        const index = adds.findIndex(a => a[compareKey] === newitem[compareKey])
+        adds.splice(index, 1)
+      }
+    }
+    if (!isExsit) {
+      dels.push(olditem)
+    }
+  }
+  return {
+    adds,
+    dels,
+    updates,
+    isModify: !!(adds.length || dels.length || updates.length)
+  }
+}
+
+/**
+ * 转化枚举对象成数组
+ * @param enumData 枚举对象
+ * @param mode 0 | 1 // 0返回字符串数组 1返回select下拉数组
+ * @returns { Array }
+ */
+export const convertEnumToArray = function(enumData: any, mode: 0 | 1 = 0) {
+  let ret: { [index: number]: string } = []
+  Object.keys(enumData).forEach((key: any) => {
+    if (isNaN(key * 1)) return
+    ret[key] = mode === 0 ? enumData[key] : {
+      value: key * 1,
+      label: enumData[key]
+    }
+  })
+  return ret
 }

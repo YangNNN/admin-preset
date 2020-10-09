@@ -1,5 +1,5 @@
 import * as extendVue from '@/frame/extend/index.js'
-import * as PageModel from '@/frame/extend/plugin/page-model'
+import * as PageModel from '@/frame/extend/plugin/page-model/index'
 import '@/frame/icons' // icon
 import '@/styles/index.scss' // global css
 import $axios from '@/utils/ajax'

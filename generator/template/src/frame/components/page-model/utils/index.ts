@@ -16,15 +16,15 @@ import { getType } from '@/utils'
  */
 export const wrapFc = function(
     fc: any,
-    context = null,
-    data?: object,
-    useFn = 'call',
-    returnValue = null
+    context: any,
+    data?: object | null,
+    useFn: any = 'call',
+    returnValue: any = null
   ) {
   if (fc && getType(fc) === 'function') {
     return fc[useFn](context, data)
   } else {
-    return fc !== undefined ? fc : returnValue
+    return fc !== void 0 ? fc : returnValue
   }
 }
 
@@ -33,7 +33,7 @@ export const wrapFc = function(
  * @param icon element-ui icon字符串
  * @returns 返回一个完整的element-ui icon class
  */
-export const wrapIconClass = function(icon: string) {
+export const wrapIconClass = function(icon?: string) {
   if (!icon) return ''
   return icon.indexOf('el-icon') === 0 ? icon : 'el-icon-' + icon
 }

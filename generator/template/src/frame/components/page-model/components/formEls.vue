@@ -16,7 +16,7 @@
         <template v-if="item.prefix">
           <div class="item-fix prefix" v-html="wrapFc(item.prefix, context, formData)" />
         </template>
-        <form-template
+        <form-item-template
           v-model="formData[item.prop]"
           :options="item"
           :context="context"

@@ -11,7 +11,7 @@
       v-if="!column.children && (column.html || column.render || column.renderFn)"
       v-slot="{row, $index}"
     >
-      <table-template
+      <table-cell-template
         :html="column.html && column.html.call(context, row, $index)"
         :render="column.render && column.render.call(context, row, $index)"
         :render-fn="column.renderFn && column.renderFn.bind(context, row, $index)"

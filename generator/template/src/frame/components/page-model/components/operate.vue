@@ -6,35 +6,24 @@
     :min-width="operate['min-width']"
   >
     <template v-slot="{row, $index}">
-      <el-button
-        v-for="(item, index) in normalTableBtns"
-        v-show="wrapFc(item.isShow, context, row, 'call', true)"
+      <operate-button 
+        :btns="normalTableBtns"
+        :row="row"
+        :index="$index"
+        @click="patchEvent(row, $index, $event)"
+      />
+      <el-dropdown 
+        v-for="(item, index) in moreBtns" 
         :key="index"
-        :disabled="wrapFc(item.isDisabled, context, row, 'call', false)"
-        :class="{'btn-copy': item.isCopy}"
-        :type="item.type"
-        :size="item.size"
-        :style="{marginLeft: item.clear ? '0' : '10px'}"
-        v-bind="item.props || {}"
-        :icon="wrapIconClass(item.icon)"
-        @click="patchEvent(row, $index, item)"
+        :class="{ ml10: !item.clear }"
+        @command="handleCommand(row, $index, $event)"
       >
-        {{ wrapFc(item.text, context, row, 'call') }}
-      </el-button>
-      <el-dropdown v-for="(item, index) in moreBtns" :key="index" @command="handleCommand(row, $index, $event)">
-        <el-button
-          v-show="wrapFc(item.isShow, context, row, 'call', true)"
-          :disabled="wrapFc(item.isDisabled, context, row, 'call', false)"
-          :class="{'btn-copy': item.isCopy}"
-          :type="item.type"
-          :size="item.size"
-          :style="{marginLeft: item.clear ? '0' : '10px'}"
-          v-bind="item.props || {}"
-          :icon="wrapIconClass(item.icon)"
-          @click="patchEvent(row, $index, item)"
-        >
-          {{ wrapFc(item.text, context, row, 'call') }}<i class="el-icon-arrow-down el-icon--right" />
-        </el-button>
+        <operate-button 
+          :btns="[item]"
+          :row="row"
+          :index="$index"
+          @click="patchEvent(row, $index, $event)"
+        />
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item
             v-for="(iitem, mIndex) in item.els"
@@ -50,11 +39,16 @@
 </template>
 
 <script>
+import OperateButton from './operate-button'
 const Clipboard = require('clipboard')
 import provideMixin from '../utils/provide-mixin'
-import { wrapFc, wrapIconClass } from '../utils'
+import { wrapFc } from '../utils'
+import { getType } from '@/utils'
 export default {
   mixins: [provideMixin],
+  components: {
+    OperateButton
+  },
   props: {
     operate: {
       type: Object,
@@ -70,7 +64,6 @@ export default {
     }
   },
   methods: {
-    wrapIconClass,
     wrapFc,
     handleCommand(row, index, jsonItem) {
       this.patchEvent(row, index, JSON.parse(jsonItem))
@@ -84,7 +77,7 @@ export default {
         this.$emit('edit', row, index)
       } else if (item.isCopy) {
         this.onCopy(
-          typeof item.copyText === 'function'
+          getType(item.copyText) === 'function'
             ? item.copyText.call(this.context, row)
             : item.copyText
         )
@@ -104,3 +97,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.el-dropdown.ml10 {
+  margin-left: 10px;
+}
+</style>

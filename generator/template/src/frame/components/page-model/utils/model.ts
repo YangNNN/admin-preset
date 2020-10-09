@@ -22,6 +22,7 @@ export const getPageDefaultConfig = () => {
       els: []
     },
     table: {
+      elementLoadingText: '加载中',
       pagination: true,
       sizes: [10, 15, 20, 30, 50, 70, 100],
       pageSize: 10,
