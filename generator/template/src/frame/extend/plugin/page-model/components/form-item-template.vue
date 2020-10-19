@@ -39,12 +39,17 @@
       getOptionsDataTypeRender(h, ctype) {
         const options = this.options
         const optionsData = options.optionsData
+
+        if (!optionsData) {
+          return h(options.eType)
+        }
+
         optionsData.label = optionsData.label || 'label'
         optionsData.value = optionsData.value || 'value'
         const list = optionsData.list || []
         let children = []
         if (ctype === 'el-radio') {
-          children = list.map(function (item, index) {
+          children = list.map(function (item = {}, index) {
             return h(
               ctype, {
               props: {

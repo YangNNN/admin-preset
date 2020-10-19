@@ -68,13 +68,13 @@ export const dateFormat = function(date: any, formatStr = 'yyyy-MM-dd') {
 }
 
 export function debounce(func: Function, interval: number) {
-  let canIExcute = true
+  let canIExecute = true
   return function(...arg: any) {
-    if (canIExcute) {
-      canIExcute = false
+    if (canIExecute) {
+      canIExecute = false
       setTimeout(() => {
         func && func(...arg)
-        canIExcute = true
+        canIExecute = true
       }, interval)
     }
   }

@@ -3,7 +3,7 @@
   "plugins": {
     "@vue/cli-plugin-babel": {},
     "@vue/cli-plugin-typescript": {
-      "classComponent": false,
+      "classComponent": true,
       "useTsWithBabel": true,
       "convertJsToTs": false
     },

@@ -6,7 +6,7 @@
 import { removeToken } from '@/utils/auth';
 import request from '@/utils/request';
 import { Loading, Message } from 'element-ui';
-import Qs from 'Qs';
+import qs from 'qs';
 import rules, { Rules } from './add-params';
 
 /**
@@ -88,7 +88,7 @@ function addParams(rules: Rules) {
     const originValue = descriptor.value
     descriptor.value = function(options: options) {
       rules.forEach(rule => {
-        options = rule.excute(options)
+        options = rule.execute(options)
       })
       return originValue.call(this, options)
     }
@@ -140,7 +140,7 @@ class Ajax {
   
     // 设置params序列化
     options.paramsSerializer = options.paramsSerializer || function(params: options["params"]) {
-      return Qs.stringify(params, {arrayFormat: 'brackets'})
+      return qs.stringify(params, {arrayFormat: 'brackets'})
     }
   
     return new Promise(async (resolve, reject) => {
@@ -202,7 +202,7 @@ export const $axios: any = function(options: options) {
 METHODS.forEach(m => {
   $axios[m] = function(url: string, requestData = {}, configData = { routeData: {} }) {
     const method = m.toUpperCase()
-    const options: options = Object.assign(configData, {
+    const options: options = Object.assign({}, {
       url,
       method,
       config: configData,

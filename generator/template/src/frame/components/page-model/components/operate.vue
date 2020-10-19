@@ -40,7 +40,7 @@
 
 <script>
 import OperateButton from './operate-button'
-const Clipboard = require('clipboard')
+import Clipboard from 'clipboard'
 import provideMixin from '../utils/provide-mixin'
 import { wrapFc } from '../utils'
 import { getType } from '@/utils'

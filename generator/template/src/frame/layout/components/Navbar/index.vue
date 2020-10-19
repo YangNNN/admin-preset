@@ -6,7 +6,6 @@
 
     <div class="right-menu">
       <template v-if="device!=='mobile'">
-        <search id="header-search" class="right-menu-item" />
 
         <error-log class="errLog-container right-menu-item hover-effect" />
 
@@ -42,7 +41,6 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import Search from './components/Search/index.vue'
 import Hamburger from './components/Hamburger/index.vue'
 import Breadcrumb from './components/Breadcrumb/index.vue'
 import ErrorLog from './components/ErrorLog/index.vue'
@@ -57,7 +55,6 @@ export default {
     ErrorLog,
     Screenfull,
     SizeSelect,
-    Search,
     pwdForm
   },
   computed: {

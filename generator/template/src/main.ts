@@ -13,6 +13,9 @@ import './permission' // permission control
 import router from './router'
 import store from './store'
 import './utils/error-log' // error log
+
+require('normalize.css')
+
 Vue.use(PageModel)
 Vue.use(VueAMap)
 Vue.use(extendVue)

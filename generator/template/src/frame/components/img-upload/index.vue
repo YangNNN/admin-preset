@@ -48,7 +48,7 @@
 </template>
 
 <script>
-const axios = window.axios
+import axios from 'axios'
 const CancelToken = axios.CancelToken
 import config from '@/config'
 import loading from './components/loading'
