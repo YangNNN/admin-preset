@@ -38,20 +38,31 @@ export const setFilesName = (files) => {
           const keys = {
             t: filetype
           }
+
+          // 使用文件读取Api
           const reader = new FileReader()
-          reader.readAsDataURL(file)
+
+          // 设置监听函数
           reader.onload = (e) => {
-            const base64Src = e.target.result
-            file.base64Src = base64Src
+            // buffer转化成本地blob地址
+            const buffer = e.target.result
+            const blob = new Blob([buffer])
+            const blobUrl = URL.createObjectURL(blob)
+            
+            // 设置临时读取路径
+            file.tempFileSrc = blobUrl
+
             // 如果是图片添加ratio和背景色
             if (filetype === 'image') {
               const img = new Image()
-              img.src = base64Src
+              img.src = blobUrl
               img.onload = () => {
-                // ratio获取
+                // ratio获取，设置图片宽高比
                 keys.r = (img.width / img.height).toFixed(2)
+
                 // 背景色获取
                 keys.c = getColor(img)
+                
                 file.newname = setFilename(Date.now(), keys, suffix)
                 resolve(file)
               }
@@ -60,6 +71,9 @@ export const setFilesName = (files) => {
               resolve(file)
             }
           }
+
+          // 读取文件
+          reader.readAsArrayBuffer(file)
         })
       })
     )

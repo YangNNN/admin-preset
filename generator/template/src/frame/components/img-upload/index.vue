@@ -264,7 +264,7 @@ export default {
       const validFiles = await this.beforeUpload(files)
       if (validFiles) {
         if (validFiles.length > 0) {
-          this.insertSrc(this.curIndex, validFiles.map(file => file.base64Src))
+          this.insertSrc(this.curIndex, validFiles.map(file => file.tempFileSrc))
           this.isqiniu ? this.qiniuUpload(validFiles) : this.doUpload(validFiles)
         } else {
           this.$message.warning('没有正确的文件需要上传')

@@ -245,7 +245,7 @@ export default {
     handleTableEvent(e, params) {
       this.$emit(e, ...params)
       switch (e) {
-        case sort-change:
+        case 'sort-change':
           this.onSortChange(...params)
           break;
       }
