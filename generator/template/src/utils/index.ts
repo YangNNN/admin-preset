@@ -51,9 +51,9 @@ export const dateFormat = function(date: any, formatStr = 'yyyy-MM-dd') {
       }
       return v
     } else if (t === 'y') {
-      return (date.getFullYear() + '').substr(4 - all.length)
+      return (innerDate.getFullYear() + '').substr(4 - all.length)
     } else if (t === 'E') {
-      var w = week[date.getDay()]
+      var w = week[innerDate.getDay()]
       if (all.length === 1) {
         return w
       } else if (all.length === 2) {
